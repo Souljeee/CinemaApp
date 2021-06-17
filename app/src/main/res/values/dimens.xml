@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <dimen name="cinema_item_height">100dp</dimen>
+    <dimen name="cinema_item_margin">10dp</dimen>
+    <dimen name="cinema_item_corner_radius">15dp</dimen>
+    <dimen name="cinema_item_elevation">15dp</dimen>
+    <dimen name="cinema_item_image_width">100dp</dimen>
+    <dimen name="cinema_item_name_text_view_width">200dp</dimen>
+    <dimen name="cinema_item_name_text_view_height">40dp</dimen>
+    <dimen name="cinema_item_text_view_text_size">25sp</dimen>
+    <dimen name="cinema_item_year_text_view_width">150dp</dimen>
+    <dimen name="cinema_item_rating_text_view_width">150dp</dimen>
+</resources>

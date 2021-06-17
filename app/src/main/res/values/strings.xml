@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">CinemaApp</string>
+    <string name="name_text">Name</string>
+    <string name="year_text">Year</string>
+    <string name="rating_text">Rating</string>
+    <string name="nav_bar_search_title">Поиск</string>
+    <string name="nav_bar_home_title">Главная</string>
+    <string name="nav_bar_favourite_title">Избранное</string>
+</resources>
