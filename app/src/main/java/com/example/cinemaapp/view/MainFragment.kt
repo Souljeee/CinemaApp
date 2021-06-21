@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.cinemaapp.R
 import com.example.cinemaapp.adapters.MainScreenAdapter
 import com.example.cinemaapp.viewmodel.AppState
 import com.example.cinemaapp.viewmodel.MainViewModel
@@ -43,7 +44,8 @@ class MainFragment : Fragment() {
             is AppState.Success -> {
                 val cinemaData = appState.cinemaData
                 loadingLayout.visibility = View.GONE
-                initRecyclerView(cinemaData)
+                initRecyclerView()
+                adapter.setCinema(cinemaData)
             }
             is AppState.Loading -> {
                 loadingLayout.visibility = View.VISIBLE
@@ -59,15 +61,36 @@ class MainFragment : Fragment() {
     }
 
 
-    private fun initRecyclerView(cinema: Cinema) = with(binding){
+    private fun initRecyclerView() = with(binding){
         mainRecyclerView.setHasFixedSize(true)
 
         val layoutManager = LinearLayoutManager(context)
         mainRecyclerView.layoutManager = layoutManager
 
-        adapter  = MainScreenAdapter(cinema)
+        adapter  = MainScreenAdapter(object : OnItemViewClickListener {
+            override fun onItemViewClick(cinema: Cinema) {
+                val manager = activity?.supportFragmentManager
+                if (manager != null) {
+                    val bundle = Bundle()
+                    bundle.putParcelable(DetailFragment.BUNDLE_EXTRA, cinema)
+                    manager.beginTransaction()
+                        .add(R.id.container, DetailFragment.newInstance(bundle))
+                        .addToBackStack("")
+                        .commit()
+                }
+            }
+        })
         mainRecyclerView.adapter = adapter
 
+    }
+
+    override fun onDestroy() {
+        adapter.removeListener()
+        super.onDestroy()
+    }
+
+    interface OnItemViewClickListener {
+        fun onItemViewClick(cinema: Cinema)
     }
 
     companion object {
