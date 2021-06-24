@@ -6,4 +6,6 @@
     <string name="nav_bar_search_title">Поиск</string>
     <string name="nav_bar_home_title">Главная</string>
     <string name="nav_bar_favourite_title">Избранное</string>
+    <string name="error">error_text</string>
+    <string name="reload">reload</string>
 </resources>

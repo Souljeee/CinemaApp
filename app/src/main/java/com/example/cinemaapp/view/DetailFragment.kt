@@ -27,23 +27,19 @@ class DetailFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
-        val cinema = arguments?.getParcelable<Cinema>(BUNDLE_EXTRA)
-        if(cinema != null){
-            nameDetails.text = cinema.name
-            descriptionDetails.text = cinema.description
-            releaseDateDetails.text = cinema.releaseDate
-            revenueDetails.text = cinema.revenue
-            durationDetails.text = cinema.duration
-            ratingDetails.text = cinema.rating
-            typeDetails.text = cinema.type
-            descriptionDetails.movementMethod = ScrollingMovementMethod()
-        }
-    }
-
-    override fun onActivityCreated(savedInstanceState: Bundle?) {
-        super.onActivityCreated(savedInstanceState)
+       arguments?.getParcelable<Cinema>(BUNDLE_EXTRA).let {
+           nameDetails.text = it?.name
+           descriptionDetails.text = it?.description
+           releaseDateDetails.text = it?.releaseDate
+           revenueDetails.text = it?.revenue
+           durationDetails.text = it?.duration
+           ratingDetails.text = it?.rating
+           typeDetails.text = it?.type
+           descriptionDetails.movementMethod = ScrollingMovementMethod()
+       }
 
     }
+    
 
     companion object {
         const val BUNDLE_EXTRA = "weather"

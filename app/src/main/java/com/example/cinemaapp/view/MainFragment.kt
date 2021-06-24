@@ -52,10 +52,10 @@ class MainFragment : Fragment() {
             }
             is AppState.Error -> {
                 loadingLayout.visibility = View.GONE
-                Snackbar
-                    .make(mainView, "Error", Snackbar.LENGTH_INDEFINITE)
-                    .setAction("Reload") { viewModel.getCinemaFromLocalSource() }
-                    .show()
+                mainFragmentRoot.showSnackBar(
+                    getString(R.string.error),
+                    getString(R.string.reload),
+                    { viewModel.getCinemaFromLocalSource() })
             }
         }
     }
@@ -69,12 +69,11 @@ class MainFragment : Fragment() {
 
         adapter  = MainScreenAdapter(object : OnItemViewClickListener {
             override fun onItemViewClick(cinema: Cinema) {
-                val manager = activity?.supportFragmentManager
-                if (manager != null) {
-                    val bundle = Bundle()
-                    bundle.putParcelable(DetailFragment.BUNDLE_EXTRA, cinema)
-                    manager.beginTransaction()
-                        .add(R.id.container, DetailFragment.newInstance(bundle))
+                activity?.supportFragmentManager?.apply {
+                        this.beginTransaction()
+                        .add(R.id.container, DetailFragment.newInstance(Bundle().apply{
+                            putParcelable(DetailFragment.BUNDLE_EXTRA, cinema)
+                        }))
                         .addToBackStack("")
                         .commit()
                 }
@@ -97,4 +96,12 @@ class MainFragment : Fragment() {
         fun newInstance() = MainFragment()
     }
 
+}
+private fun View.showSnackBar(
+    text: String,
+    actionText: String,
+    action: (View) -> Unit,
+    length: Int = Snackbar.LENGTH_INDEFINITE
+) {
+    Snackbar.make(this, text, length).setAction(actionText, action).show()
 }
