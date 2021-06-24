@@ -5,7 +5,7 @@ class RepositoryImpl : Repository {
         return Cinema()
     }
 
-    override fun getCinemaFromLocalStorage(): Cinema {
-        return Cinema();
+    override fun getCinemaFromLocalStorage(): List<Cinema> {
+        return getDefaultCinemas();
     }
 }
