@@ -31,7 +31,7 @@ class DetailFragment : Fragment() {
            nameDetails.text = it?.name
            descriptionDetails.text = it?.description
            releaseDateDetails.text = it?.releaseDate
-           revenueDetails.text = it?.revenue
+           revenueDetails.text = it?.revenue.toString()
            durationDetails.text = it?.duration
            ratingDetails.text = it?.rating
            typeDetails.text = it?.type
@@ -42,7 +42,8 @@ class DetailFragment : Fragment() {
     
 
     companion object {
-        const val BUNDLE_EXTRA = "weather"
+        private const val API_KEY = "37a33c74592d522dfdc42d090c29c4bf"
+        const val BUNDLE_EXTRA = "cinema"
 
         fun newInstance(bundle: Bundle): DetailFragment {
             val fragment = DetailFragment()

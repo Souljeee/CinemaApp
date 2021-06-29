@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinemaapp.R
 import com.example.cinemaapp.model.Cinema
+import com.example.cinemaapp.model.CinemaDTO
 import com.example.cinemaapp.view.MainFragment
 
 
@@ -36,7 +37,7 @@ class MainScreenAdapter(private var onItemViewClickListener: MainFragment.OnItem
     }
 
     override fun getItemCount(): Int {
-        return 3
+        return cinema.size
     }
     fun removeListener() {
         onItemViewClickListener = null
@@ -59,7 +60,7 @@ class MainScreenAdapter(private var onItemViewClickListener: MainFragment.OnItem
         fun bind(cinema: Cinema) {
             name.text = cinema.name
             year.text = cinema.releaseDate
-            rating.text = cinema.rating
+            rating.text = cinema.rating.toString()
             itemView.setOnClickListener {
                 onItemViewClickListener?.onItemViewClick(cinema)
             }

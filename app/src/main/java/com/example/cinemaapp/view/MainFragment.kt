@@ -14,18 +14,21 @@ import com.example.cinemaapp.viewmodel.AppState
 import com.example.cinemaapp.viewmodel.MainViewModel
 import com.example.cinemaapp.databinding.MainFragmentBinding
 import com.example.cinemaapp.model.Cinema
+import com.example.cinemaapp.model.CinemaLoader
+import com.example.cinemaapp.model.RepositoryImpl
 import com.google.android.material.snackbar.Snackbar
-import kotlinx.android.synthetic.main.main_fragment.*
 
 class MainFragment : Fragment() {
 
     private lateinit var binding: MainFragmentBinding
     private lateinit var viewModel: MainViewModel
-    private lateinit var adapter : MainScreenAdapter
+    private lateinit var adapter: MainScreenAdapter
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?,
-                              savedInstanceState: Bundle?): View {
-        binding = MainFragmentBinding.inflate(inflater,container,false)
+    override fun onCreateView(
+        inflater: LayoutInflater, container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        binding = MainFragmentBinding.inflate(inflater, container, false)
 
         return binding.root
     }
@@ -50,6 +53,19 @@ class MainFragment : Fragment() {
             is AppState.Loading -> {
                 loadingLayout.visibility = View.VISIBLE
             }
+            is AppState.SuccessDetails -> {
+                var cinemaDetails = appState.cinema
+                loadingLayout.visibility = View.GONE
+                activity?.supportFragmentManager?.apply {
+                    this.beginTransaction()
+                        .add(R.id.container, DetailFragment.newInstance(Bundle().apply {
+                            putParcelable(DetailFragment.BUNDLE_EXTRA, cinemaDetails)
+                        }))
+                        .addToBackStack("")
+                        .commit()
+                }
+
+            }
             is AppState.Error -> {
                 loadingLayout.visibility = View.GONE
                 mainFragmentRoot.showSnackBar(
@@ -61,25 +77,25 @@ class MainFragment : Fragment() {
     }
 
 
-    private fun initRecyclerView() = with(binding){
+    private fun initRecyclerView() = with(binding) {
         mainRecyclerView.setHasFixedSize(true)
 
         val layoutManager = LinearLayoutManager(context)
         mainRecyclerView.layoutManager = layoutManager
 
-        adapter  = MainScreenAdapter(object : OnItemViewClickListener {
+        adapter = MainScreenAdapter(object : OnItemViewClickListener {
             override fun onItemViewClick(cinema: Cinema) {
-                activity?.supportFragmentManager?.apply {
-                        this.beginTransaction()
-                        .add(R.id.container, DetailFragment.newInstance(Bundle().apply{
-                            putParcelable(DetailFragment.BUNDLE_EXTRA, cinema)
-                        }))
-                        .addToBackStack("")
-                        .commit()
-                }
+                getCinemaDetailsFromServer(cinema)
             }
         })
         mainRecyclerView.adapter = adapter
+
+    }
+
+    fun getCinemaDetailsFromServer(cinema : Cinema) {
+        val id = cinema.id
+
+        id?.let { viewModel.getCinemaFromRemoteSource(it) }
 
     }
 
@@ -97,6 +113,7 @@ class MainFragment : Fragment() {
     }
 
 }
+
 private fun View.showSnackBar(
     text: String,
     actionText: String,
