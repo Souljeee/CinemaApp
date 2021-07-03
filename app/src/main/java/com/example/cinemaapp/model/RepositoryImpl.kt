@@ -16,7 +16,7 @@ class RepositoryImpl : Repository {
             id = dto?.id,
             name = dto?.title,
             releaseDate = dto?.release_date,
-            revenue = dto?.revenue,
+            revenue = "${dto?.revenue}$",
             rating =  "${dto?.vote_average}(${dto?.vote_count})",
             duration = "${dto?.runtime} мин",
             description = dto?.overview,
