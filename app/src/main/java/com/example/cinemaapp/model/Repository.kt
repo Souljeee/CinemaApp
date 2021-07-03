@@ -1,6 +1,7 @@
 package com.example.cinemaapp.model
 
 interface Repository {
-    fun getCinemaFromServer() : Cinema
+    fun getCinemasFromServer() : List<Cinema>?
+    fun getCinemaFromServer(id:Int) : Cinema
     fun getCinemaFromLocalStorage() : List<Cinema>
 }
