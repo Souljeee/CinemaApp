@@ -10,6 +10,7 @@ import com.example.cinemaapp.R
 import com.example.cinemaapp.model.Cinema
 import com.example.cinemaapp.model.CinemaDTO
 import com.example.cinemaapp.view.MainFragment
+import com.squareup.picasso.Picasso
 
 
 class MainScreenAdapter(private var onItemViewClickListener: MainFragment.OnItemViewClickListener?) :
@@ -61,6 +62,7 @@ class MainScreenAdapter(private var onItemViewClickListener: MainFragment.OnItem
             name.text = cinema.name
             year.text = cinema.releaseDate
             rating.text = cinema.rating.toString()
+            Picasso.get().load("https://image.tmdb.org/t/p/w500${cinema.poster}").fit().into(poster)
             itemView.setOnClickListener {
                 onItemViewClickListener?.onItemViewClick(cinema)
             }
