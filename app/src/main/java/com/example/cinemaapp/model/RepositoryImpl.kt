@@ -1,7 +1,7 @@
 package com.example.cinemaapp.model
 
 class RepositoryImpl : Repository {
-    override fun getCinemasFromServer() : List<Cinema> {
+    override fun getCinemasFromServer() : MutableList<Cinema> {
         val dto = CinemaRepo.api.getCinemas("37a33c74592d522dfdc42d090c29c4bf","ru").execute().body()
         val popularCinemaList  = mutableListOf<Cinema>()
         for(i in 0 until dto?.results?.size!!){
@@ -13,6 +13,7 @@ class RepositoryImpl : Repository {
     override fun getCinemaFromServer(id:Int): Cinema {
         val dto: CinemaDTO? = CinemaRepo.api.getCinema(id,"37a33c74592d522dfdc42d090c29c4bf","ru").execute().body()
         return Cinema(
+            adult = dto?.adult,
             id = dto?.id,
             name = dto?.title,
             releaseDate = dto?.release_date,
@@ -27,6 +28,7 @@ class RepositoryImpl : Repository {
 
     private fun toCinema(cinemaDTO: CinemaDTO): Cinema{
         return Cinema(
+            adult = cinemaDTO.adult,
             id = cinemaDTO.id,
             name = cinemaDTO.title.toString(),
             releaseDate = cinemaDTO.release_date.toString(),

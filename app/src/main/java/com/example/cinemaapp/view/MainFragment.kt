@@ -1,5 +1,6 @@
 package com.example.cinemaapp.view
 
+import android.content.Context
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -18,17 +19,17 @@ import com.example.cinemaapp.model.Cinema
 import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
-
+    private var refreshKey:Boolean = false
     private lateinit var binding: MainFragmentBinding
     private lateinit var viewModel: MainViewModel
     private lateinit var adapter: MainScreenAdapter
+    private lateinit var cinemaData: MutableList<Cinema>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View {
         binding = MainFragmentBinding.inflate(inflater, container, false)
-
         return binding.root
     }
 
@@ -41,13 +42,14 @@ class MainFragment : Fragment() {
         viewModel.getCinemaFromLocalSource()
     }
 
+
     private fun renderData(appState: AppState) = with(binding) {
         when (appState) {
             is AppState.Success -> {
-                val cinemaData = appState.cinemaData
+                cinemaData = appState.cinemaData
                 loadingLayout.visibility = View.GONE
                 initRecyclerView()
-                adapter.setCinema(cinemaData)
+                adapter.setCinema(isAdultContent(cinemaData))
             }
             is AppState.Loading -> {
                 loadingLayout.visibility = View.VISIBLE
@@ -75,21 +77,38 @@ class MainFragment : Fragment() {
         }
     }
 
+    private fun isAdultContent(cinemaData: MutableList<Cinema>) : MutableList<Cinema> {
+        activity?.let {
+            if(!(it.getPreferences(Context.MODE_PRIVATE).getBoolean(ADULT_CONTENT_EXTRA,false))){
+                for(i in 0 until cinemaData.size){
+                    if(cinemaData[i].adult == true){
+                        cinemaData.removeAt(i)
+                    }
+                }
+            }
+        }
+        return cinemaData
+    }
+
 
     private fun initRecyclerView() = with(binding) {
         mainRecyclerView.setHasFixedSize(true)
 
         val layoutManager = LinearLayoutManager(context)
-        //val layoutManager = GridLayoutManager(context,3)
         mainRecyclerView.layoutManager = layoutManager
 
         adapter = MainScreenAdapter(object : OnItemViewClickListener {
             override fun onItemViewClick(cinema: Cinema) {
+                saveCinemaToHistory(cinema)
                 getCinemaDetailsFromServer(cinema)
             }
         })
         mainRecyclerView.adapter = adapter
 
+    }
+
+    private fun saveCinemaToHistory(cinema: Cinema) {
+        viewModel.saveCityToDB(cinema)
     }
 
     fun getCinemaDetailsFromServer(cinema : Cinema) {
