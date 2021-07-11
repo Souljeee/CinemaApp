@@ -1,6 +1,5 @@
 package com.example.cinemaapp.view
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -8,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.cinemaapp.R
 import com.example.cinemaapp.adapters.MainScreenAdapter
@@ -15,10 +15,6 @@ import com.example.cinemaapp.viewmodel.AppState
 import com.example.cinemaapp.viewmodel.MainViewModel
 import com.example.cinemaapp.databinding.MainFragmentBinding
 import com.example.cinemaapp.model.Cinema
-import com.example.cinemaapp.model.CinemaLoader
-import com.example.cinemaapp.model.RepositoryImpl
-import com.example.cinemaapp.services.DetailsService
-import com.example.cinemaapp.services.ID_EXTRA
 import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
@@ -84,24 +80,12 @@ class MainFragment : Fragment() {
         mainRecyclerView.setHasFixedSize(true)
 
         val layoutManager = LinearLayoutManager(context)
+        //val layoutManager = GridLayoutManager(context,3)
         mainRecyclerView.layoutManager = layoutManager
 
         adapter = MainScreenAdapter(object : OnItemViewClickListener {
             override fun onItemViewClick(cinema: Cinema) {
-                //getCinemaDetailsFromServer(cinema)
-                val id = cinema.id
-                context?.let {
-                    it.startService(Intent(it,DetailsService::class.java).apply {
-                        putExtra(ID_EXTRA, id)
-                    })
-                }
-
-                activity?.supportFragmentManager?.apply {
-                    this.beginTransaction()
-                        .add(R.id.container, DetailFragment())
-                        .addToBackStack("")
-                        .commit()
-                }
+                getCinemaDetailsFromServer(cinema)
             }
         })
         mainRecyclerView.adapter = adapter
@@ -110,9 +94,7 @@ class MainFragment : Fragment() {
 
     fun getCinemaDetailsFromServer(cinema : Cinema) {
         val id = cinema.id
-
         id?.let { viewModel.getCinemaFromRemoteSource(it) }
-
     }
 
     override fun onDestroy() {

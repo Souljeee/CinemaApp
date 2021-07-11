@@ -16,6 +16,7 @@ import com.example.cinemaapp.R
 import com.example.cinemaapp.databinding.DetailFragmentBinding
 import com.example.cinemaapp.databinding.MainFragmentBinding
 import com.example.cinemaapp.model.Cinema
+import com.squareup.picasso.Picasso
 
 const val DETAILS_INTENT_FILTER = "DETAILS INTENT FILTER"
 const val DETAILS_LOAD_RESULT_EXTRA = "LOAD RESULT"
@@ -36,68 +37,29 @@ class DetailFragment : Fragment() {
 
     private lateinit var binding: DetailFragmentBinding
 
-    private val loadResultsReceiver: BroadcastReceiver = object : BroadcastReceiver() {
-        override fun onReceive(context: Context, intent: Intent) {
-            when (intent.getStringExtra(DETAILS_LOAD_RESULT_EXTRA)) {
-                DETAILS_INTENT_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_DATA_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_RESPONSE_EMPTY_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_REQUEST_ERROR_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_REQUEST_ERROR_MESSAGE_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_URL_MALFORMED_EXTRA -> TODO(PROCESS_ERROR)
-                DETAILS_RESPONSE_SUCCESS_EXTRA -> intent.getParcelableExtra<Cinema>(DETAILS_CINEMA_EXTRA)?.let {
-                    renderData(
-                        it
-                    )
-                }
-                else -> TODO(PROCESS_ERROR)
-            }
-        }
-    }
-
-
-    private fun renderData(cinema: Cinema) = with(binding) {
-
-        nameDetails.text = cinema.name
-        descriptionDetails.text = cinema.description
-        releaseDateDetails.text = cinema.releaseDate
-        revenueDetails.text = cinema.revenue.toString()
-        durationDetails.text = cinema.duration
-        ratingDetails.text = cinema.rating
-        typeDetails.text = cinema.type
-        descriptionDetails.movementMethod = ScrollingMovementMethod()
-    }
-
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        context?.let {
-            LocalBroadcastManager.getInstance(it)
-                .registerReceiver(loadResultsReceiver, IntentFilter(DETAILS_INTENT_FILTER))
-        }
-    }
-
-    override fun onDestroy() {
-        context?.let {
-            LocalBroadcastManager.getInstance(it).unregisterReceiver(loadResultsReceiver)
-        }
-        super.onDestroy()
-    }
-
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        binding = DetailFragmentBinding.inflate(inflater,container,false)
+        binding = DetailFragmentBinding.inflate(inflater, container, false)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) = with(binding) {
         super.onViewCreated(view, savedInstanceState)
-
+        arguments?.getParcelable<Cinema>(BUNDLE_EXTRA).let {
+            nameDetails.text = it?.name
+            descriptionDetails.text = it?.description
+            releaseDateDetails.text = it?.releaseDate
+            revenueDetails.text = it?.revenue.toString()
+            durationDetails.text = it?.duration
+            ratingDetails.text = it?.rating
+            typeDetails.text = it?.type
+            Picasso.get().load("https://image.tmdb.org/t/p/w500${it?.poster}").fit().into(detailPoster)
+            descriptionDetails.movementMethod = ScrollingMovementMethod()
+        }
     }
-    
+
 
     companion object {
         private const val API_KEY = "37a33c74592d522dfdc42d090c29c4bf"

@@ -8,6 +8,7 @@ import kotlinx.android.parcel.Parcelize
 data class CinemaDTO (
     var id: Int? = 0,
     var overview: String? = null,
+    var poster_path:String? = null,
     var release_date: String? = null,
     var revenue : Int? = 0,
     var runtime: String? = null,
