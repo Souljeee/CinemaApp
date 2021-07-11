@@ -1,5 +1,6 @@
 package com.example.cinemaapp.view
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,6 +17,8 @@ import com.example.cinemaapp.databinding.MainFragmentBinding
 import com.example.cinemaapp.model.Cinema
 import com.example.cinemaapp.model.CinemaLoader
 import com.example.cinemaapp.model.RepositoryImpl
+import com.example.cinemaapp.services.DetailsService
+import com.example.cinemaapp.services.ID_EXTRA
 import com.google.android.material.snackbar.Snackbar
 
 class MainFragment : Fragment() {
@@ -85,7 +88,20 @@ class MainFragment : Fragment() {
 
         adapter = MainScreenAdapter(object : OnItemViewClickListener {
             override fun onItemViewClick(cinema: Cinema) {
-                getCinemaDetailsFromServer(cinema)
+                //getCinemaDetailsFromServer(cinema)
+                val id = cinema.id
+                context?.let {
+                    it.startService(Intent(it,DetailsService::class.java).apply {
+                        putExtra(ID_EXTRA, id)
+                    })
+                }
+
+                activity?.supportFragmentManager?.apply {
+                    this.beginTransaction()
+                        .add(R.id.container, DetailFragment())
+                        .addToBackStack("")
+                        .commit()
+                }
             }
         })
         mainRecyclerView.adapter = adapter

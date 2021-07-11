@@ -52,14 +52,25 @@
                    android:textSize="20sp"
                    android:textColor="@android:color/black"/>
 
-               <TextView
-                   android:layout_marginBottom="5dp"
-                   android:id="@+id/rating_details"
-                   android:layout_width="match_parent"
-                   android:layout_height="wrap_content"
-                   android:text="fdsdf"
-                   android:textSize="20sp"
-                   android:textColor="@android:color/black"/>
+              <LinearLayout
+                  android:layout_width="match_parent"
+                  android:layout_height="wrap_content"
+                  android:orientation="horizontal">
+                  <TextView
+                      android:layout_marginBottom="5dp"
+                      android:id="@+id/rating_details"
+                      android:layout_width="wrap_content"
+                      android:layout_height="wrap_content"
+                      android:text="fdsdf"
+                      android:textSize="20sp"
+                      android:textColor="@android:color/black"/>
+                  <ImageView
+                      android:id="@+id/rating_ic"
+                      android:src="@drawable/ic_baseline_star_24"
+                      android:layout_marginStart="10dp"
+                      android:layout_width="30dp"
+                      android:layout_height="match_parent"/>
+              </LinearLayout>
 
                <TextView
                    android:layout_marginBottom="5dp"

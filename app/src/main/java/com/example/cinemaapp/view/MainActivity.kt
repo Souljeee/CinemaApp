@@ -1,13 +1,17 @@
 package com.example.cinemaapp.view
 
+import android.content.Intent
+import android.content.IntentFilter
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import com.example.cinemaapp.R
+import com.example.cinemaapp.broadcastReceiver.MainBroadcastReceiver
 import com.example.cinemaapp.databinding.MainActivityBinding
 import kotlinx.android.synthetic.main.main_activity.*
 
 class MainActivity : AppCompatActivity() {
+    private val receiver = MainBroadcastReceiver()
     private lateinit var binding: MainActivityBinding
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -20,6 +24,8 @@ class MainActivity : AppCompatActivity() {
                     .replace(R.id.container, MainFragment.newInstance())
                     .commitNow()
         }
+
+        registerReceiver(receiver, IntentFilter(Intent.ACTION_AIRPLANE_MODE_CHANGED))
 
         val homeFragment = MainFragment()
         val favouriteFragment = FavouriteFragment()
@@ -40,6 +46,11 @@ class MainActivity : AppCompatActivity() {
             replace(R.id.container, fragment)
             commit()
         }
+
+    override fun onDestroy() {
+        unregisterReceiver(receiver)
+        super.onDestroy()
+    }
 
 
 
