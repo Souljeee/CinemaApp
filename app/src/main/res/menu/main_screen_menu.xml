@@ -5,6 +5,10 @@
         android:title="@string/main_menu_history_title"/>
 
     <item
-        android:id="@+id/menu_options"
-        android:title="@string/main_menu_options_title"/>
+    android:id="@+id/menu_options"
+    android:title="@string/main_menu_options_title"/>
+
+    <item
+        android:id="@+id/menu_contacts"
+        android:title="@string/main_menu_contacts_title"/>
 </menu>
