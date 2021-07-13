@@ -8,16 +8,12 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinemaapp.R
 import com.example.cinemaapp.model.Cinema
-import com.example.cinemaapp.model.CinemaDTO
-import com.example.cinemaapp.view.MainFragment
 import com.squareup.picasso.Picasso
 
+class HistoryAdapter: RecyclerView.Adapter<HistoryAdapter.ViewHolder>() {
 
-class MainScreenAdapter(private var onItemViewClickListener: MainFragment.OnItemViewClickListener?) :
-    RecyclerView.Adapter<MainScreenAdapter.ViewHolder>() {
-
-    private lateinit var cinema : MutableList<Cinema>
-    fun setCinema(cinema: MutableList<Cinema>){
+    private lateinit var cinema : List<Cinema>
+    fun setCinema(cinema: List<Cinema>){
         this.cinema = cinema
         notifyDataSetChanged()
     }
@@ -26,23 +22,21 @@ class MainScreenAdapter(private var onItemViewClickListener: MainFragment.OnItem
     override fun onCreateViewHolder(
         parent: ViewGroup,
         viewType: Int
-    ): MainScreenAdapter.ViewHolder {
-        val v: View = LayoutInflater.from(parent.context).inflate(R.layout.cinema_item_layout, parent, false)
+    ): HistoryAdapter.ViewHolder {
+        val v: View =
+            LayoutInflater.from(parent.context).inflate(R.layout.history_item_layout, parent, false)
         holder = ViewHolder(v)
         return holder
     }
 
-    override fun onBindViewHolder(holder: MainScreenAdapter.ViewHolder, position: Int) {
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(cinema[position])
     }
+
 
     override fun getItemCount(): Int {
         return cinema.size
     }
-    fun removeListener() {
-        onItemViewClickListener = null
-    }
-
 
     inner class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
         private var name: TextView
@@ -62,9 +56,6 @@ class MainScreenAdapter(private var onItemViewClickListener: MainFragment.OnItem
             year.text = cinema.releaseDate
             rating.text = cinema.rating.toString()
             Picasso.get().load("https://image.tmdb.org/t/p/w500${cinema.poster}").fit().into(poster)
-            itemView.setOnClickListener {
-                onItemViewClickListener?.onItemViewClick(cinema)
-            }
         }
     }
 }

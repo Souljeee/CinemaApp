@@ -4,8 +4,11 @@
     <string name="year_text">Year</string>
     <string name="rating_text">Rating</string>
     <string name="nav_bar_search_title">Поиск</string>
+    <string name="main_menu_history_title">История</string>
+    <string name="main_menu_options_title">Настройки</string>
     <string name="nav_bar_home_title">Главная</string>
     <string name="nav_bar_favourite_title">Избранное</string>
     <string name="error">error_text</string>
     <string name="reload">reload</string>
+    <string name="adult_content_switch_value">Взрослый контент</string>
 </resources>
