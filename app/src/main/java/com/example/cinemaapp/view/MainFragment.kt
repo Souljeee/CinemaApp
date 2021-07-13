@@ -1,6 +1,7 @@
 package com.example.cinemaapp.view
 
 import android.content.Context
+import android.content.res.Configuration
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,6 +11,7 @@ import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.cinemaapp.R
 import com.example.cinemaapp.adapters.MainScreenAdapter
 import com.example.cinemaapp.viewmodel.AppState

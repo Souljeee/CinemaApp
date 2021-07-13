@@ -12,4 +12,8 @@
     <string name="reload">reload</string>
     <string name="adult_content_switch_value">Взрослый контент</string>
     <string name="main_menu_contacts_title">Контакты</string>
+    <string name="main_menu_map_title">Карта</string>
+    <string name="default_address">Red Square, 1, Moscow</string>
+    <string name="button_search_map">Search</string>
+    <string name="marker_start">Start</string>
 </resources>

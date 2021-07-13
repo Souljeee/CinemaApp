@@ -82,6 +82,15 @@ class MainActivity : AppCompatActivity() {
                 }
                 true
             }
+            R.id.menu_map ->{
+                supportFragmentManager.apply {
+                    beginTransaction()
+                        .add(R.id.container, MapsFragment.newInstance())
+                        .addToBackStack("")
+                        .commitAllowingStateLoss()
+                }
+                true
+            }
 
             else -> super.onOptionsItemSelected(item)
         }
