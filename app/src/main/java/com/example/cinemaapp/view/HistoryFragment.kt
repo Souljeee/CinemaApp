@@ -44,7 +44,7 @@ class HistoryFragment : Fragment() {
         when (appState) {
             is AppState.Success -> {
                 initRecyclerView()
-                adapter.setCinema(appState.cinemaData)
+                adapter.setCinema(appState.cinemaData[0])
             }
         }
 

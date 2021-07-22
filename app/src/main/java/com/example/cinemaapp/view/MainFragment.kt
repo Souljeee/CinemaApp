@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.GridLayoutManager
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.cinemaapp.R
-import com.example.cinemaapp.adapters.MainScreenAdapter
+import com.example.cinemaapp.adapters.*
 import com.example.cinemaapp.viewmodel.AppState
 import com.example.cinemaapp.viewmodel.MainViewModel
 import com.example.cinemaapp.databinding.MainFragmentBinding
@@ -24,8 +24,11 @@ class MainFragment : Fragment() {
     private var refreshKey:Boolean = false
     private lateinit var binding: MainFragmentBinding
     private lateinit var viewModel: MainViewModel
-    private lateinit var adapter: MainScreenAdapter
-    private lateinit var cinemaData: MutableList<Cinema>
+    private lateinit var popularAdapter: PopularAdapter
+    private lateinit var topRatedAdapter: TopRatedAdapter
+    private lateinit var nowPlayingAdapter: NowPlayingAdapter
+    private lateinit var upcomingAdapter: UpcomingAdapter
+    private lateinit var cinemaData: MutableList<MutableList<Cinema>>
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -50,8 +53,14 @@ class MainFragment : Fragment() {
             is AppState.Success -> {
                 cinemaData = appState.cinemaData
                 loadingLayout.visibility = View.GONE
-                initRecyclerView()
-                adapter.setCinema(isAdultContent(cinemaData))
+                initNowPlayingRecyclerView()
+                nowPlayingAdapter.setCinema(isAdultContent(cinemaData[2]))
+                initPopularRecyclerView()
+                popularAdapter.setCinema(isAdultContent(cinemaData[0]))
+                initTopRatedRecyclerView()
+                topRatedAdapter.setCinema(isAdultContent(cinemaData[3]))
+                initUpcomingRecyclerView()
+                upcomingAdapter.setCinema(isAdultContent(cinemaData[1]))
             }
             is AppState.Loading -> {
                 loadingLayout.visibility = View.VISIBLE
@@ -93,20 +102,68 @@ class MainFragment : Fragment() {
     }
 
 
-    private fun initRecyclerView() = with(binding) {
-        mainRecyclerView.setHasFixedSize(true)
+    private fun initPopularRecyclerView() = with(binding) {
+        popularRv.setHasFixedSize(true)
 
         val layoutManager = LinearLayoutManager(context)
-        mainRecyclerView.layoutManager = layoutManager
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        popularRv.layoutManager = layoutManager
 
-        adapter = MainScreenAdapter(object : OnItemViewClickListener {
+        popularAdapter = PopularAdapter(object : OnItemViewClickListener {
             override fun onItemViewClick(cinema: Cinema) {
                 saveCinemaToHistory(cinema)
                 getCinemaDetailsFromServer(cinema)
             }
         })
-        mainRecyclerView.adapter = adapter
+        popularRv.adapter = popularAdapter
+    }
 
+    private fun initTopRatedRecyclerView() = with(binding) {
+        topRatedRv.setHasFixedSize(true)
+
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        topRatedRv.layoutManager = layoutManager
+
+        topRatedAdapter = TopRatedAdapter(object : OnItemViewClickListener {
+            override fun onItemViewClick(cinema: Cinema) {
+                saveCinemaToHistory(cinema)
+                getCinemaDetailsFromServer(cinema)
+            }
+        })
+        topRatedRv.adapter = topRatedAdapter
+    }
+
+    private fun initNowPlayingRecyclerView() = with(binding) {
+        nowPlayingRv.setHasFixedSize(true)
+
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        nowPlayingRv.layoutManager = layoutManager
+
+        nowPlayingAdapter = NowPlayingAdapter(object : OnItemViewClickListener {
+            override fun onItemViewClick(cinema: Cinema) {
+                saveCinemaToHistory(cinema)
+                getCinemaDetailsFromServer(cinema)
+            }
+        })
+        nowPlayingRv.adapter = nowPlayingAdapter
+    }
+
+    private fun initUpcomingRecyclerView() = with(binding) {
+        upcomingRv.setHasFixedSize(true)
+
+        val layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        upcomingRv.layoutManager = layoutManager
+
+        upcomingAdapter = UpcomingAdapter(object : OnItemViewClickListener {
+            override fun onItemViewClick(cinema: Cinema) {
+                saveCinemaToHistory(cinema)
+                getCinemaDetailsFromServer(cinema)
+            }
+        })
+        upcomingRv.adapter = upcomingAdapter
     }
 
     private fun saveCinemaToHistory(cinema: Cinema) {
@@ -119,7 +176,10 @@ class MainFragment : Fragment() {
     }
 
     override fun onDestroy() {
-        adapter.removeListener()
+        popularAdapter.removeListener()
+        nowPlayingAdapter.removeListener()
+        topRatedAdapter.removeListener()
+        upcomingAdapter.removeListener()
         super.onDestroy()
     }
 

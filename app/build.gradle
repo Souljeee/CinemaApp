@@ -28,12 +28,33 @@ android {
 
     buildTypes {
         release {
+            signingConfig signingConfigs.release
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
     buildFeatures {
         viewBinding = true
+    }
+    flavorDimensions 'version'
+    productFlavors {
+        freeConfig {
+            dimension 'version'
+            versionNameSuffix '.free'
+        }
+        paid {
+            dimension 'version'
+            versionName '.paid'
+        }
+    }
+
+    signingConfigs {
+        release {
+            storeFile file("properties.jks")
+            storePassword '1q2w3e4r5t'
+            keyAlias 'Souljeee'
+            keyPassword '1q2w3e4r5t'
+        }
     }
 }
 

@@ -5,8 +5,8 @@
         android:title="@string/main_menu_history_title"/>
 
     <item
-    android:id="@+id/menu_options"
-    android:title="@string/main_menu_options_title"/>
+        android:id="@+id/menu_options"
+        android:title="@string/main_menu_options_title"/>
 
     <item
         android:id="@+id/menu_contacts"
@@ -14,4 +14,7 @@
     <item
         android:id="@+id/menu_map"
         android:title="@string/main_menu_map_title"/>
+    <item
+        android:id="@+id/menu_toast"
+        android:title="@string/main_menu_toast_version_title"/>
 </menu>
