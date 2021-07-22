@@ -28,9 +28,9 @@ class MainViewModel(
         liveDataToObserve.value = AppState.Loading
         Thread {
             sleep(1000)
-            liveDataToObserve.postValue(repositoryImpl.getCinemasFromServer()?.let {
+            liveDataToObserve.postValue(repositoryImpl.getCinemas()?.let {
                 Success(
-                    it as MutableList<Cinema>
+                    it as MutableList<MutableList<Cinema>>
                 )
             })
         }.start()

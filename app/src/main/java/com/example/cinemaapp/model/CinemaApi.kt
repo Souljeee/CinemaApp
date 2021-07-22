@@ -7,7 +7,25 @@ import retrofit2.http.*
 
 interface CinemaApi {
     @GET("popular")
-    fun getCinemas(
+    fun getPopularCinemas(
+        @Query("api_key") token : String,
+        @Query("language") language: String
+    ): Call<CinemaListDTO>
+
+    @GET("now_playing")
+    fun getNowPlayingCinemas(
+        @Query("api_key") token : String,
+        @Query("language") language: String
+    ): Call<CinemaListDTO>
+
+    @GET("upcoming")
+    fun getTopRatedCinemas(
+        @Query("api_key") token : String,
+        @Query("language") language: String
+    ): Call<CinemaListDTO>
+
+    @GET("top_rated")
+    fun getUpcomingCinemas(
         @Query("api_key") token : String,
         @Query("language") language: String
     ): Call<CinemaListDTO>

@@ -16,4 +16,9 @@
     <string name="default_address">Red Square, 1, Moscow</string>
     <string name="button_search_map">Search</string>
     <string name="marker_start">Start</string>
+    <string name="now_playing_title">Смотрят сейчас</string>
+    <string name="popular_title">Популярные</string>
+    <string name="top_rated_title">Высокий рэйтинг</string>
+    <string name="upcoming_title">Скоро в прокате</string>
+    <string name="main_menu_toast_version_title">Тост</string>
 </resources>
